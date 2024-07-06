@@ -16,19 +16,7 @@ export class Api {
     return this.kyClient.get(`search/users?q=${querySearch}`).json()
   }
 
-  static getRepositoryOfUser(username: string) {
+  static getRepositoryOfUser(username: string): Promise<Repository[]> {
     return this.kyClient.get(`users/${username}/repos`).json()
-  }
-
-  static getRepositoryInfo(owner: string, repository: string) {
-    return this.kyClient.get(`repos/${owner}/${repository}`).json()
-  }
-
-  static getRepositoryLanguages(owner: string, repository: string) {
-    return this.kyClient.get(`repos/${owner}/${repository}/languages`).json()
-  }
-
-  static getStarredRepositories(username: string) {
-    return this.kyClient.get(`repos/${username}/starred`).json()
   }
 }

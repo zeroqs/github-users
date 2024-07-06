@@ -1,7 +1,7 @@
 import { createEffect, createEvent, createStore, sample } from 'effector'
-import { debounce } from 'patronum'
+import { debounce, or } from 'patronum'
 
-import { getUserFx } from '@/pages/User/model'
+import { getUserFx, userLoadedRoute } from '@/pages/User/model'
 import { Api } from '@/shared/api'
 
 export const searchChanged = createEvent<string>()
@@ -17,7 +17,7 @@ const fetchSearchFx = createEffect<Search, SearchResult>((search) => {
 export const $loading = fetchSearchFx.pending
 
 $search.on(searchChanged, (_, search) => search)
-$search.on(getUserFx.done, () => '' )
+$search.on(getUserFx.done, () => '')
 
 $result.on(fetchSearchFx.doneData, (_, result) => {
   if ($search.getState().length === 0) return []
@@ -33,9 +33,10 @@ sample({
     source: searchChanged,
     timeout: 400,
   }),
-  filter: $search.map((search) => search.length > 0),
+  filter: or(
+    $search.map((search) => search.length > 0),
+    userLoadedRoute.$isOpened.map((isOpened) => !isOpened),
+  ),
   fn: (search) => ({ searchQuery: search }),
   target: fetchSearchFx,
 })
-
-

@@ -38,3 +38,19 @@ interface GitHubUser extends SearchGitHubUser {
   repos_url: string
   type: string
 }
+
+interface Repository {
+  id: number
+  name: string
+  html_url: string
+  pushed_at: string
+  created_at: string
+  forks_count: number
+  open_issues_count: number
+  forks: number
+  watchers: number
+  stargazers_count: number
+  language: string | null
+  description: string | null
+  fork: boolean
+}
